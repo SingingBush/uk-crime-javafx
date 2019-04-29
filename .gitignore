@@ -1,0 +1,6 @@
+.DS_Store
+target/
+
+# Ignore Intellij IDE specific files
+.idea/
+*.iml
