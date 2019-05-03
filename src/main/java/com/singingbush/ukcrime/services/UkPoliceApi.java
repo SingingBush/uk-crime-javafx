@@ -1,5 +1,6 @@
 package com.singingbush.ukcrime.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.singingbush.ukcrime.model.Crime;
@@ -17,6 +18,8 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 public class UkPoliceApi {
 
@@ -121,5 +124,27 @@ public class UkPoliceApi {
 //            });
 
         return null;
+    }
+
+    private <T> CompletableFuture<List<T>> getManyAsync(final URI uri, final Class<T> type) {
+        final HttpRequest request = get(uri);
+        final CollectionType listType = _mapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
+
+        return _httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+            .thenApply(response -> {
+                log.info("Response status code: " + response.statusCode());
+                log.debug("Response headers: " + response.headers());
+                log.debug("Response body: " + response.body());
+                return response;
+            })
+            .thenApply(HttpResponse::body)
+            .thenApply(body -> {
+                try {
+                    return _mapper.readValue(body, listType);
+                } catch (final JsonProcessingException e) {
+                    log.error("", e);
+                    throw new CompletionException(e);
+                }
+            });
     }
 }
