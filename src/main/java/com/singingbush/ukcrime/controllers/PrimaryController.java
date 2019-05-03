@@ -8,10 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.util.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +26,11 @@ public class PrimaryController {
     @FXML
     public ComboBox<PoliceForce> forceSelect;
 
+//    @FXML
+//    public Button primaryButton;
+
     @FXML
-    public Button primaryButton;
+    public Hyperlink forceUrl;
 
     public PrimaryController() {
         _api = new UkPoliceApi();
@@ -72,10 +72,15 @@ public class PrimaryController {
         log.debug("chosen force {}", force);
 
         if(force != null) {
+            final PoliceForce forceDetails = _api.getPoliceForceById(force.getId());
+            forceUrl.setText(forceDetails.getUrl()); // todo: phone, description etc?
+            //forceUrl.setText(String.format("tel:%s", forceDetails.getTelephone()));
+
             final List<SeniorOfficer> officers = _api.getPoliceForceSeniorOfficers(force);
             _seniorOfficers.clear();
             _seniorOfficers.addAll(officers);
         } else {
+            forceUrl.setText(null);
             _seniorOfficers.clear();
         }
     }
