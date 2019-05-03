@@ -46,6 +46,10 @@ public class PrimaryController {
         return _seniorOfficers;
     }
 
+    public PoliceForceListCell getPoliceForceButtonCell() {
+        return new PoliceForceListCell();
+    }
+
     @FXML
     protected void initialize() {
         new Thread(() -> {
@@ -62,7 +66,7 @@ public class PrimaryController {
     }
 
     @FXML
-    public void onForceChosen(ActionEvent actionEvent) {
+    public void onForceChosen(final ActionEvent actionEvent) {
         final PoliceForce force = this.forceSelect.getValue();
 
         log.debug("chosen force {}", force);
@@ -77,32 +81,34 @@ public class PrimaryController {
     }
 
     public Callback<ListView<PoliceForce>, ListCell<PoliceForce>> getPoliceForceCellFactory() {
-        return new Callback<>() {
-            @Override
-            public ListCell<PoliceForce> call(ListView<PoliceForce> policeForceListView) {
-                return new ListCell<>() {
-                    @Override
-                    protected void updateItem(PoliceForce policeForce, boolean b) {
-                        super.updateItem(policeForce, b);
-                        setText(policeForce != null ? policeForce.getName() : null);
-                    }
-                };
-            }
-        };
+        return policeForceListView -> new PoliceForceListCell();
     }
 
     public Callback<ListView<SeniorOfficer>, ListCell<SeniorOfficer>> getSeniorOfficerCellFactory() {
-        return new Callback<>() {
-            @Override
-            public ListCell<SeniorOfficer> call(ListView<SeniorOfficer> listView) {
-                return new ListCell<>() {
-                    @Override
-                    protected void updateItem(SeniorOfficer officer, boolean b) {
-                        super.updateItem(officer, b);
-                        setText(officer != null ? String.format("%s (%s)", officer.getName(), officer.getRank()) : null);
-                    }
-                };
+        return listView -> new SeniorOfficerListCell();
+    }
+
+    private static class PoliceForceListCell extends ListCell<PoliceForce> {
+        @Override
+        protected void updateItem(PoliceForce policeForce, boolean empty) {
+            super.updateItem(policeForce, empty);
+            if (empty) {
+                setText(null);
+            } else {
+                setText(policeForce != null ? policeForce.getName() : "null");
             }
-        };
+        }
+    }
+
+    private static class SeniorOfficerListCell extends ListCell<SeniorOfficer> {
+        @Override
+        protected void updateItem(SeniorOfficer officer, boolean empty) {
+            super.updateItem(officer, empty);
+            if (empty) {
+                setText(null);
+            } else {
+                setText(officer != null ? String.format("%s (%s)", officer.getName(), officer.getRank()) : "null");
+            }
+        }
     }
 }

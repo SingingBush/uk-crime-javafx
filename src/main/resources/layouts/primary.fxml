@@ -12,6 +12,7 @@
         <Label text="Select a Police Force" />
 
         <ComboBox fx:id="forceSelect" promptText="select a force"
+                  buttonCell="${controller.policeForceButtonCell}"
                   cellFactory="${controller.policeForceCellFactory}"
                   disable="true" items="${controller.policeForces}" onAction="#onForceChosen" />
 
