@@ -21,7 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <openjfx.version>16</openjfx.version>
+        <openjfx.version>17.0.0.1</openjfx.version>
     </properties>
 
     <dependencyManagement>
