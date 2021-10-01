@@ -11,6 +11,8 @@
     </parent>
 
     <artifactId>police-api</artifactId>
+    <packaging>jar</packaging>
+    <name>Police API</name>
 
     <dependencies>
         <dependency>
@@ -18,6 +20,10 @@
             <artifactId>javafx-fxml</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
