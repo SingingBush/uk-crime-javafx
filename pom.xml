@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <openjfx.version>17.0.0.1</openjfx.version>
+        <openjfx.version>16</openjfx.version>
 
         <slf4j.version>1.7.32</slf4j.version>
         <jackson.version>2.13.0</jackson.version>
@@ -90,7 +90,7 @@
                 <plugin>
                     <groupId>org.openjfx</groupId>
                     <artifactId>javafx-maven-plugin</artifactId>
-                    <version>0.0.7</version>
+                    <version>0.0.6</version>
                 </plugin>
             </plugins>
         </pluginManagement>

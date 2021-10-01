@@ -102,7 +102,7 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.singingbush.com.singingbush.ukcrime.AppMain</mainClass>
+                    <mainClass>ukcrime/com.singingbush.ukcrime.AppMain</mainClass>
                 </configuration>
             </plugin>
         </plugins>
