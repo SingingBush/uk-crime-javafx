@@ -24,7 +24,7 @@
 
         <openjfx.version>17.0.1</openjfx.version>
 
-        <slf4j.version>1.7.32</slf4j.version>
+        <slf4j.version>1.7.35</slf4j.version>
         <jackson.version>2.13.1</jackson.version>
         <junit.version>5.8.2</junit.version>
     </properties>
