@@ -1,3 +1,16 @@
 .button {
     -fx-text-fill: blue;
 }
+
+.force_info_box {
+    -fx-font-size: 14;
+}
+
+.force_name {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-fill: #1111c0;
+}
+.force_description {
+    -fx-font-size: 16;
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx" styleClass="force_info_box">
+    <children>
+        <Label fx:id="nameLabel" styleClass="force_name" />
+        <TextArea fx:id="description" styleClass="force_description" />
+        <Hyperlink fx:id="phone" />
+        <Hyperlink fx:id="url" />
+    </children>
+</fx:root>

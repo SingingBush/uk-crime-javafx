@@ -3,10 +3,10 @@ package com.singingbush.ukcrime.controllers;
 import com.singingbush.ukcrime.model.PoliceForce;
 import com.singingbush.ukcrime.model.SeniorOfficer;
 import com.singingbush.ukcrime.services.UkPoliceApi;
+import com.singingbush.ukcrime.ui.PoliceForceComponent;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
@@ -24,13 +24,10 @@ public class PrimaryController {
     private final ObservableList<SeniorOfficer> _seniorOfficers;
 
     @FXML
-    public ComboBox<PoliceForce> forceSelect;
-
-//    @FXML
-//    public Button primaryButton;
+    private PoliceForceComponent currentForce;
 
     @FXML
-    public Hyperlink forceUrl;
+    private ListView<PoliceForce> forceListView;
 
     public PrimaryController() {
         _api = new UkPoliceApi();
@@ -46,43 +43,27 @@ public class PrimaryController {
         return _seniorOfficers;
     }
 
-    public PoliceForceListCell getPoliceForceButtonCell() {
-        return new PoliceForceListCell();
-    }
-
     @FXML
     protected void initialize() {
         new Thread(() -> {
             Platform.runLater(() -> {
-                final List<PoliceForce> forces = _api.getAllPoliceForces();
+                final List<PoliceForce> forces = _api.getAllPoliceForces(); // todo: get this from a service that can call API and cache response
 
                 _policeForces.addAll(forces);
 
-                forceSelect.setDisable(false);
+                forceListView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPoliceForce, newPoliceForce) -> {
+                    final PoliceForce forceDetails = _api.getPoliceForceById(newPoliceForce.getId());
+
+                    currentForce.setPoliceForce(forceDetails);
+
+                    final List<SeniorOfficer> officers = _api.getPoliceForceSeniorOfficers(newPoliceForce);
+                    _seniorOfficers.clear();
+                    _seniorOfficers.addAll(officers);
+                });
             });
         }).start();
 
         log.info("Initialising PrimaryController");
-    }
-
-    @FXML
-    public void onForceChosen(final ActionEvent actionEvent) {
-        final PoliceForce force = this.forceSelect.getValue();
-
-        log.debug("chosen force {}", force);
-
-        if(force != null) {
-            final PoliceForce forceDetails = _api.getPoliceForceById(force.getId());
-            forceUrl.setText(forceDetails.getUrl()); // todo: phone, description etc?
-            //forceUrl.setText(String.format("tel:%s", forceDetails.getTelephone()));
-
-            final List<SeniorOfficer> officers = _api.getPoliceForceSeniorOfficers(force);
-            _seniorOfficers.clear();
-            _seniorOfficers.addAll(officers);
-        } else {
-            forceUrl.setText(null);
-            _seniorOfficers.clear();
-        }
     }
 
     public Callback<ListView<PoliceForce>, ListCell<PoliceForce>> getPoliceForceCellFactory() {

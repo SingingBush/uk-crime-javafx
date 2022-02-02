@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.VBox?>
+<?import com.singingbush.ukcrime.ui.PoliceForceComponent?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.singingbush.ukcrime.controllers.PrimaryController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.singingbush.ukcrime.controllers.PrimaryController">
     <children>
         <Label text="Select a Police Force" />
 
-        <ComboBox fx:id="forceSelect" promptText="select a force"
-                  buttonCell="${controller.policeForceButtonCell}"
-                  cellFactory="${controller.policeForceCellFactory}"
-                  disable="true" items="${controller.policeForces}" onAction="#onForceChosen" />
+        <ListView fx:id="forceListView"
+                  cellFactory="${controller.policeForceCellFactory}" items="${controller.policeForces}" />
 
-<!--        <Button fx:id="primaryButton" onAction="#onForceChosen" text="Load Force data" />-->
+        <PoliceForceComponent fx:id="currentForce" />
 
-        <Hyperlink fx:id="forceUrl" />
-
-        <ListView items="${controller.seniorOfficers}"
-                  cellFactory="${controller.seniorOfficerCellFactory}"
-                  prefHeight="200.0" prefWidth="200.0" />
+        <ListView cellFactory="${controller.seniorOfficerCellFactory}" items="${controller.seniorOfficers}" />
     </children>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
