@@ -3,7 +3,9 @@ module ukcrime {
     requires javafx.fxml;
     requires jericho.html;
     requires org.slf4j; // was previously slf4j.api;
-    requires org.apache.logging.log4j;
+    requires ch.qos.logback.core;
+    requires ch.qos.logback.classic; //only runtime dependency
+    requires java.xml; // needed by logback
 
     requires police.api;
 
