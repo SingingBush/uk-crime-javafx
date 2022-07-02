@@ -5,11 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
-import net.htmlparser.jericho.Renderer;
-import net.htmlparser.jericho.Segment;
-import net.htmlparser.jericho.Source;
+import javafx.scene.web.WebView;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +17,7 @@ public class PoliceForceComponent extends VBox {
     private Label nameLabel;
 
     @FXML
-    private TextArea description;
+    private WebView descriptionHtml;
 
     @FXML
     private Hyperlink phone;
@@ -44,24 +41,11 @@ public class PoliceForceComponent extends VBox {
     public void setPoliceForce(final PoliceForce policeForce) {
         this.nameLabel.setText(policeForce.getName());
 
-        this.description.setText(convertHtmlToPlainText(policeForce.getDescription()));
+        this.descriptionHtml.getEngine().loadContent(policeForce.getDescription());
 
         final String phoneUrl = policeForce.getTelephone() != null && !policeForce.getTelephone().isEmpty() ? String.format("tel:%s", policeForce.getTelephone().trim()) : null;
         phone.setText(phoneUrl);
 
         this.url.setText(policeForce.getUrl());
-    }
-
-    //@Nullable
-    private String convertHtmlToPlainText(final String html) {
-        if(html != null && !html.isEmpty()) {
-            final Source htmlSource = new Source(html);
-            final Segment segment = new Segment(htmlSource, 0, htmlSource.length());
-            return new Renderer(segment)
-                .setIncludeHyperlinkURLs(true)
-                .toString();
-        } else {
-            return null;
-        }
     }
 }

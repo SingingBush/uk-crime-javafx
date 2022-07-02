@@ -1,7 +1,8 @@
 module ukcrime {
     requires javafx.controls;
     requires javafx.fxml;
-    requires jericho.html;
+    requires javafx.web;
+
     requires org.slf4j; // was previously slf4j.api;
     requires ch.qos.logback.core;
     requires ch.qos.logback.classic; //only runtime dependency
