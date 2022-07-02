@@ -3,6 +3,8 @@ UK Crime JavaFX
 
 ![Java CI](https://github.com/SingingBush/uk-crime-javafx/workflows/Java%20CI/badge.svg)
 
-### Building
+A project that demonstrates how to use properly use JavaFX on modern Java (JDK 11 and 17) with proper use of JPMS.
 
-Clone the project and run using the latest version of Maven and JDK 11: `mvn javafx:run`
+### Build and Run the application
+
+Clone the project and run using the latest version of Maven and JDK 11: `mvn javafx:run -pl javafx-app`
