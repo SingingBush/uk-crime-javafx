@@ -7,4 +7,4 @@ A project that demonstrates how to use properly use JavaFX on modern Java (JDK 1
 
 ### Build and Run the application
 
-Clone the project and run using the latest version of Maven and JDK 11: `mvn javafx:run -pl javafx-app`
+Clone the project and run using the latest version of Maven and JDK 11: `mvn install` then `mvn javafx:run -pl javafx-app`
