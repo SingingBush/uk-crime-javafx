@@ -22,12 +22,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <openjfx.version>19</openjfx.version>
+        <openjfx.version>19.0.2.1</openjfx.version>
 
         <slf4j.version>2.0.6</slf4j.version>
         <logback.version>1.4.5</logback.version>
-        <jackson.version>2.14.1</jackson.version>
-        <junit.version>5.9.1</junit.version>
+        <jackson.version>2.14.2</jackson.version>
+        <junit.version>5.9.2</junit.version>
     </properties>
 
     <dependencyManagement>
@@ -118,7 +118,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.0.0-M7</version>
+                    <version>3.0.0-M8</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

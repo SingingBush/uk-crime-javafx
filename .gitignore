@@ -1,6 +1,14 @@
 .DS_Store
 target/
 
-# Ignore Intellij IDE specific files
-.idea/
+### Ignore VS Code (Java Plugin) files ###
+.classpath
+.project
+.settings/
+.vscode/
+
+### Ignore Intellij IDEA specific files ###
+.idea
+*.iws
 *.iml
+*.ipr
