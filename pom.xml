@@ -25,7 +25,7 @@
         <openjfx.version>19.0.2.1</openjfx.version>
 
         <slf4j.version>2.0.6</slf4j.version>
-        <logback.version>1.4.5</logback.version>
+        <logback.version>1.4.6</logback.version>
         <jackson.version>2.14.2</jackson.version>
         <junit.version>5.9.2</junit.version>
     </properties>
