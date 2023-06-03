@@ -5,7 +5,11 @@ target/
 .classpath
 .project
 .settings/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
 
 ### Ignore Intellij IDEA specific files ###
 .idea
