@@ -6,6 +6,8 @@ module police.api {
     requires com.fasterxml.jackson.annotation; // for model
     requires com.fasterxml.jackson.databind; // services
 
+    requires static org.jetbrains.annotations;
+
     opens com.singingbush.ukcrime.model to javafx.fxml, com.fasterxml.jackson.databind;
 
     exports com.singingbush.ukcrime.services;

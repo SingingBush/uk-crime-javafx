@@ -7,6 +7,8 @@ import com.singingbush.ukcrime.model.Crime;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.singingbush.ukcrime.model.PoliceForce;
 import com.singingbush.ukcrime.model.SeniorOfficer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +18,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -51,17 +57,25 @@ public class UkPoliceApi {
      * @param policeForce the {@link PoliceForce}
      * @return a list of senior officers for the given police force
      */
-    public List<SeniorOfficer> getPoliceForceSeniorOfficers(final PoliceForce policeForce) {
+    public List<SeniorOfficer> getPoliceForceSeniorOfficers(final @NotNull PoliceForce policeForce) {
         return getMany(URI.create(String.format("%s/forces/%s/people", API_BASE, policeForce.getId())), SeniorOfficer.class);
     }
 
     public List<Crime> streetCrimeByLocation(final String latitude, final String longitude) {
-        final URI uri = URI.create("$API_BASE/crimes-street/all-crime?lat=$latitude&lng=$longitude&date=2019-03");
+        final String lastMonth = LocalDate.ofInstant(Instant.now(), ZoneId.of("Europe/London"))
+            .minusMonths(1)
+            .format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+        final URI uri = URI.create(String.format("%s/crimes-street/all-crime?lat=%s&lng=%s&date=%s", API_BASE, latitude, longitude, lastMonth));
         return getMany(uri, Crime.class);
     }
 
-    public List<Crime> streetCrimeByPoliceForce(final PoliceForce policeForce) {
-        final URI uri = URI.create(String.format("%s/crimes-no-location?category=all-crime&force=%s&date=2019-03", API_BASE, policeForce.getId()));
+    public List<Crime> streetCrimeByPoliceForce(final @NotNull PoliceForce policeForce) {
+        final String lastMonth = LocalDate.ofInstant(Instant.now(), ZoneId.of("Europe/London"))
+            .minusMonths(1)
+            .format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+        final URI uri = URI.create(String.format("%s/crimes-no-location?category=all-crime&force=%s&date=%s", API_BASE, policeForce.getId(), lastMonth));
         return getMany(uri, Crime.class);
     }
 
@@ -76,7 +90,7 @@ public class UkPoliceApi {
             .build();
     }
 
-    private <T> T getOne(URI uri, final Class<T> type) {
+    private <T> @Nullable T getOne(URI uri, final Class<T> type) {
         final HttpRequest request = get(uri);
 
         try {
@@ -95,7 +109,7 @@ public class UkPoliceApi {
         return null;
     }
 
-    private <T> List<T> getMany(final URI uri, final Class<T> type) {
+    private <T> @Nullable List<T> getMany(final URI uri, final Class<T> type) {
         final HttpRequest request = get(uri);
 
         try {
