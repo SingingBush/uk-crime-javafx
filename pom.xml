@@ -24,10 +24,10 @@
 
         <openjfx.version>19.0.2.1</openjfx.version>
 
-        <slf4j.version>2.0.13</slf4j.version>
+        <slf4j.version>2.0.17</slf4j.version>
         <logback.version>1.5.6</logback.version>
-        <jackson.version>2.17.2</jackson.version>
-        <junit.version>5.11.1</junit.version>
+        <jackson.version>2.18.2</jackson.version>
+        <junit.version>5.12.1</junit.version>
     </properties>
 
     <dependencyManagement>
@@ -62,7 +62,7 @@
             <dependency>
                 <groupId>org.jetbrains</groupId>
                 <artifactId>annotations</artifactId>
-                <version>26.0.0</version>
+                <version>26.0.2</version>
             </dependency>
 
             <dependency>
@@ -108,7 +108,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.13.0</version>
+                    <version>3.14.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.openjfx</groupId>
@@ -118,17 +118,17 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.5.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.5.3</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.3</version>
+                    <version>3.1.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        jdk: ['11', '17', '21', '23']
+        jdk: ['11', '17', '21', '24']
 
     steps:
     - uses: actions/checkout@v4
