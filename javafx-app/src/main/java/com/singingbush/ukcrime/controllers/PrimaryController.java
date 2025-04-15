@@ -5,6 +5,7 @@ import com.singingbush.ukcrime.model.SeniorOfficer;
 import com.singingbush.ukcrime.services.UkPoliceApi;
 import com.singingbush.ukcrime.ui.PoliceForceComponent;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,6 +23,7 @@ public class PrimaryController {
     private final UkPoliceApi _api;
     private final ObservableList<PoliceForce> _policeForces;
     private final ObservableList<SeniorOfficer> _seniorOfficers;
+    private final SimpleBooleanProperty _hasOfficers;
 
     @FXML
     private PoliceForceComponent currentForce;
@@ -29,10 +31,14 @@ public class PrimaryController {
     @FXML
     private ListView<PoliceForce> forceListView;
 
+    @FXML
+    private ListView<SeniorOfficer> officersListView;
+
     public PrimaryController() {
         _api = new UkPoliceApi();
         _policeForces = FXCollections.observableArrayList();
         _seniorOfficers = FXCollections.observableArrayList();
+        _hasOfficers = new SimpleBooleanProperty(false);
     }
 
     public ObservableList<PoliceForce> getPoliceForces() {
@@ -45,6 +51,8 @@ public class PrimaryController {
 
     @FXML
     protected void initialize() {
+        officersListView.visibleProperty().bind(_hasOfficers);
+
         new Thread(() -> {
             Platform.runLater(() -> {
                 final List<PoliceForce> forces = _api.getAllPoliceForces(); // todo: get this from a service that can call API and cache response
@@ -59,6 +67,8 @@ public class PrimaryController {
                     final List<SeniorOfficer> officers = _api.getPoliceForceSeniorOfficers(newPoliceForce);
                     _seniorOfficers.clear();
                     _seniorOfficers.addAll(officers);
+
+                    _hasOfficers.setValue(!officers.isEmpty());
                 });
             });
         }).start();

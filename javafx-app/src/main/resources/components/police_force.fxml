@@ -2,14 +2,21 @@
 
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
 <fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx" styleClass="force_info_box">
-    <children>
-        <Label fx:id="nameLabel" styleClass="force_name" />
-        <WebView fx:id="descriptionHtml" />
-        <Hyperlink fx:id="phone" />
-        <Hyperlink fx:id="url" />
-    </children>
+    <Label fx:id="nameLabel" styleClass="force_name" />
+
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Web" /> <Hyperlink fx:id="url" />
+    </HBox>
+
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Phone" /> <Hyperlink fx:id="phone" />
+    </HBox>
+
+    <WebView fx:id="descriptionHtml" style="-fx-padding: 2 0"
+             maxHeight="200.0" maxWidth="Infinity" />
 </fx:root>

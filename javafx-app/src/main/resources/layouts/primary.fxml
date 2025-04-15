@@ -3,22 +3,31 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import com.singingbush.ukcrime.ui.PoliceForceComponent?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.singingbush.ukcrime.controllers.PrimaryController">
-    <children>
-        <Label text="Select a Police Force" />
-
-        <ListView fx:id="forceListView"
-                  cellFactory="${controller.policeForceCellFactory}" items="${controller.policeForces}" />
-
-        <PoliceForceComponent fx:id="currentForce" />
-
-        <ListView cellFactory="${controller.seniorOfficerCellFactory}" items="${controller.seniorOfficers}" />
-    </children>
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </padding>
-</VBox>
+
+    <left>
+        <VBox>
+            <Label text="Select a Police Force" style="-fx-padding: 4 0" />
+            <ListView fx:id="forceListView"
+                      VBox.vgrow="ALWAYS"
+                      cellFactory="${controller.policeForceCellFactory}" items="${controller.policeForces}"/>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="12" style="-fx-padding: 0 10;">
+            <PoliceForceComponent fx:id="currentForce"/>
+
+            <ListView fx:id="officersListView"
+                      cellFactory="${controller.seniorOfficerCellFactory}"
+                      items="${controller.seniorOfficers}" />
+        </VBox>
+    </center>
+</BorderPane>
