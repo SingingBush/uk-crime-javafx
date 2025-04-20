@@ -6,7 +6,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx" styleClass="force_info_box">
+<fx:root type="javafx.scene.layout.VBox" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx"
+         prefWidth="600.0"
+         spacing="10"
+         styleClass="force_info_box">
+
     <Label fx:id="nameLabel" styleClass="force_name" />
 
     <HBox alignment="CENTER_LEFT">
@@ -17,6 +21,8 @@
         <Label text="Phone" /> <Hyperlink fx:id="phone" />
     </HBox>
 
-    <WebView fx:id="descriptionHtml" style="-fx-padding: 2 0"
-             maxHeight="200.0" maxWidth="Infinity" />
+    <WebView fx:id="descriptionHtml" style="-fx-padding: 2 0;-fx-background-color: rgba(225,225,229,0.81)"
+             VBox.vgrow="ALWAYS"
+             prefHeight="400.0"
+             minHeight="100" />
 </fx:root>

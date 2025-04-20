@@ -7,6 +7,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,7 +39,7 @@ public class PoliceForceComponent extends VBox {
         }
     }
 
-    public void setPoliceForce(final PoliceForce policeForce) {
+    public void setPoliceForce(final @NotNull PoliceForce policeForce) {
         this.nameLabel.setText(policeForce.getName());
 
         this.descriptionHtml.getEngine().loadContent(policeForce.getDescription());

@@ -4,8 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import com.singingbush.ukcrime.ui.PoliceForceComponent?>
+<?import com.singingbush.ukcrime.ui.NeighbourhoodComponent?>
 
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.singingbush.ukcrime.controllers.PrimaryController">
@@ -14,7 +16,7 @@
     </padding>
 
     <left>
-        <VBox>
+        <VBox spacing="10">
             <Label text="Select a Police Force" style="-fx-padding: 4 0" />
             <ListView fx:id="forceListView"
                       VBox.vgrow="ALWAYS"
@@ -22,12 +24,29 @@
         </VBox>
     </left>
     <center>
-        <VBox spacing="12" style="-fx-padding: 0 10;">
+        <VBox spacing="10">
+            <padding>
+                <Insets left="10.0" />
+            </padding>
+
             <PoliceForceComponent fx:id="currentForce"/>
 
             <ListView fx:id="officersListView"
-                      cellFactory="${controller.seniorOfficerCellFactory}"
-                      items="${controller.seniorOfficers}" />
+                    cellFactory="${controller.seniorOfficerCellFactory}"
+                    items="${controller.seniorOfficers}"
+                    prefWidth="280" maxWidth="300"
+                    minHeight="100"
+                    prefHeight="290" />
+
+            <HBox spacing="10">
+                <ListView fx:id="neighbourhoodsListView"
+                          cellFactory="${controller.neighbourhoodCellFactory}"
+                          items="${controller.neighbourhoods}"
+                          prefWidth="280" maxWidth="300"
+                          prefHeight="300" />
+
+                <NeighbourhoodComponent fx:id="currentNeighbourhood" HBox.hgrow="ALWAYS" />
+            </HBox>
         </VBox>
     </center>
 </BorderPane>
