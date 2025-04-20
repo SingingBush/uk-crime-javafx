@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.singingbush.ukcrime.model.Crime;
+import com.singingbush.ukcrime.model.Neighbourhood;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.singingbush.ukcrime.model.PoliceForce;
 import com.singingbush.ukcrime.model.SeniorOfficer;
@@ -24,6 +25,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
@@ -34,11 +36,13 @@ public class UkPoliceApi {
 
     private final ObjectMapper _mapper;
     private HttpClient _httpClient;
+    private LocalDate lastUpdatedDate;
 
     public UkPoliceApi() {
         _mapper = new ObjectMapper();
 
         _httpClient = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(4L))
             //.version(HttpClient.Version.HTTP_1_1)  // HttpClient.Version.HTTP_2 is the default
             .build();
     }
@@ -52,6 +56,20 @@ public class UkPoliceApi {
     }
 
     /**
+     * @see <a href="https://data.police.uk/docs/method/crime-last-updated/">API doc: Last updated</a>
+     * @return Month of the latest crime data in ISO date format. (The day is irrelevant and is only there to keep a standard formatted date)
+     */
+    public LocalDate getLastUpdatedDate() {
+        if(lastUpdatedDate == null) {
+            final Map<String, String> body = getOne(URI.create(String.format("%s/crime-last-updated", API_BASE)), Map.class);
+
+            final String lastUpdatedString = body.get("date");
+            this.lastUpdatedDate = LocalDate.parse(lastUpdatedString, DateTimeFormatter.ISO_DATE);
+        }
+        return lastUpdatedDate;
+    }
+
+    /**
      * @see <a href="https://data.police.uk/docs/method/senior-officers/">API doc: Senior officers</a>
      *
      * @param policeForce the {@link PoliceForce}
@@ -61,13 +79,29 @@ public class UkPoliceApi {
         return getMany(URI.create(String.format("%s/forces/%s/people", API_BASE, policeForce.getId())), SeniorOfficer.class);
     }
 
-    public List<Crime> streetCrimeByLocation(final String latitude, final String longitude) {
-        final String lastMonth = LocalDate.ofInstant(Instant.now(), ZoneId.of("Europe/London"))
-            .minusMonths(1)
-            .format(DateTimeFormatter.ofPattern("yyyy-MM"));
+    /**
+     * @see <a href="https://data.police.uk/docs/method/neighbourhoods/">API doc: List of neighbourhoods for a force</a>
+     *
+     * @param policeForce the {@link PoliceForce}
+     * @return a list of neighbourhoods
+     */
+    public List<Neighbourhood> getPoliceForceNeighbourhoods(final @NotNull PoliceForce policeForce) {
+        return getMany(URI.create(String.format("%s/%s/neighbourhoods", API_BASE, policeForce.getId())), Neighbourhood.class);
+    }
 
-        final URI uri = URI.create(String.format("%s/crimes-street/all-crime?lat=%s&lng=%s&date=%s", API_BASE, latitude, longitude, lastMonth));
-        return getMany(uri, Crime.class);
+    /**
+     * @see <a href="https://data.police.uk/docs/method/neighbourhood/">API doc: Specific neighbourhood</a>
+     *
+     * @param policeForce the {@link PoliceForce}
+     * @param id the neighbourhood id
+     * @return a neighbourhood by id
+     */
+    public Neighbourhood getPoliceForceNeighbourhood(final @NotNull PoliceForce policeForce, final @NotNull String id) {
+        return getOne(URI.create(String.format("%s/%s/%s", API_BASE, policeForce.getId(), id)), Neighbourhood.class);
+    }
+
+    public List<Crime> streetCrimeByLocation(final String latitude, final String longitude) {
+        return getMany(URI.create(String.format("%s/crimes-street/all-crime?lat=%s&lng=%s", API_BASE, latitude, longitude)), Crime.class);
     }
 
     public List<Crime> streetCrimeByPoliceForce(final @NotNull PoliceForce policeForce) {
@@ -98,13 +132,15 @@ public class UkPoliceApi {
             final HttpResponse<String> response = _httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Response status code: " + response.statusCode());
             log.debug("Response headers: " + response.headers());
-            log.debug("Response body: " + response.body());
+            log.trace("Response body: " + response.body());
 
-            final T thing = _mapper.readValue(response.body(), type);
-            log.info("found a {} object", type.getSimpleName());
-            return thing;
+            if(response.statusCode() == 200) {
+                final T thing = _mapper.readValue(response.body(), type);
+                log.debug("found a {} object", type.getSimpleName());
+                return thing;
+            }
         } catch(final IOException | InterruptedException e) {
-            log.error("", e);
+            log.error(String.format("Error while making HTTP request to %s", uri), e);
         }
         return null;
     }
@@ -117,16 +153,18 @@ public class UkPoliceApi {
             final HttpResponse<String> response = _httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Response status code: " + response.statusCode());
             log.debug("Response headers: " + response.headers());
-            log.debug("Response body: " + response.body());
+            log.trace("Response body: " + response.body());
 
-            final CollectionType listType = _mapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
-            final List<T> things = _mapper.readValue(response.body(), listType);
+            if(response.statusCode() == 200) {
+                final CollectionType listType = _mapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
+                final List<T> things = _mapper.readValue(response.body(), listType);
 
 //            final List<T> things = _mapper.readValue(response.body(), new TypeReference<>(){}); // not working
-            log.info("found {} {} objects", things.size(), type.getSimpleName());
-            return things;
+                log.info("found {} {} objects", things.size(), type.getSimpleName());
+                return things;
+            }
         } catch(final IOException | InterruptedException e) {
-            log.error("", e);
+            log.error(String.format("Error while making HTTP request to %s", uri), e);
         }
 
 

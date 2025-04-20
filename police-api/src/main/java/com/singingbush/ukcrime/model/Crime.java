@@ -3,6 +3,7 @@ package com.singingbush.ukcrime.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -10,10 +11,10 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Crime {
 
-    @JsonProperty("id")
+    @JsonProperty(value = "id", required = true)
     private Long id;
 
-    @JsonProperty("category")
+    @JsonProperty(value = "category", required = true)
     private String category;
 
     @JsonProperty("location_type")
@@ -28,6 +29,7 @@ public class Crime {
     @JsonProperty("context")
     private String context;
 
+    @Nullable
     @JsonProperty("outcome_status")
     private OutcomeStatus outcomeStatus;
 
