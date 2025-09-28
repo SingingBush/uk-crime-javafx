@@ -34,11 +34,18 @@ public class UkPoliceApi {
     private static final Logger log = LoggerFactory.getLogger(UkPoliceApi.class);
     private static final String API_BASE = "https://data.police.uk/api";
 
+    private final String _baseApiUrl; // only needed for wiremock tests
     private final ObjectMapper _mapper;
-    private HttpClient _httpClient;
+    private final HttpClient _httpClient;
     private LocalDate lastUpdatedDate;
 
     public UkPoliceApi() {
+        this(API_BASE);
+    }
+
+    // only used for testing with Wiremock
+    UkPoliceApi(@NotNull final String baseUrl) {
+        _baseApiUrl = !baseUrl.isBlank() ? baseUrl : API_BASE;
         _mapper = new ObjectMapper();
 
         _httpClient = HttpClient.newBuilder()
@@ -48,11 +55,11 @@ public class UkPoliceApi {
     }
 
     public List<PoliceForce> getAllPoliceForces() {
-        return getMany(URI.create(String.format("%s/forces", API_BASE)), PoliceForce.class);
+        return getMany(URI.create(String.format("%s/forces", _baseApiUrl)), PoliceForce.class);
     }
 
     public PoliceForce getPoliceForceById(final String policeForceId) {
-        return getOne(URI.create(String.format("%s/forces/%s", API_BASE, policeForceId)), PoliceForce.class);
+        return getOne(URI.create(String.format("%s/forces/%s", _baseApiUrl, policeForceId)), PoliceForce.class);
     }
 
     /**
@@ -61,7 +68,7 @@ public class UkPoliceApi {
      */
     public LocalDate getLastUpdatedDate() {
         if(lastUpdatedDate == null) {
-            final Map<String, String> body = getOne(URI.create(String.format("%s/crime-last-updated", API_BASE)), Map.class);
+            final Map<String, String> body = getOne(URI.create(String.format("%s/crime-last-updated", _baseApiUrl)), Map.class);
 
             final String lastUpdatedString = body.get("date");
             this.lastUpdatedDate = LocalDate.parse(lastUpdatedString, DateTimeFormatter.ISO_DATE);
@@ -76,7 +83,7 @@ public class UkPoliceApi {
      * @return a list of senior officers for the given police force
      */
     public List<SeniorOfficer> getPoliceForceSeniorOfficers(final @NotNull PoliceForce policeForce) {
-        return getMany(URI.create(String.format("%s/forces/%s/people", API_BASE, policeForce.getId())), SeniorOfficer.class);
+        return getMany(URI.create(String.format("%s/forces/%s/people", _baseApiUrl, policeForce.getId())), SeniorOfficer.class);
     }
 
     /**
@@ -86,7 +93,7 @@ public class UkPoliceApi {
      * @return a list of neighbourhoods
      */
     public List<Neighbourhood> getPoliceForceNeighbourhoods(final @NotNull PoliceForce policeForce) {
-        return getMany(URI.create(String.format("%s/%s/neighbourhoods", API_BASE, policeForce.getId())), Neighbourhood.class);
+        return getMany(URI.create(String.format("%s/%s/neighbourhoods", _baseApiUrl, policeForce.getId())), Neighbourhood.class);
     }
 
     /**
@@ -97,11 +104,11 @@ public class UkPoliceApi {
      * @return a neighbourhood by id
      */
     public Neighbourhood getPoliceForceNeighbourhood(final @NotNull PoliceForce policeForce, final @NotNull String id) {
-        return getOne(URI.create(String.format("%s/%s/%s", API_BASE, policeForce.getId(), id)), Neighbourhood.class);
+        return getOne(URI.create(String.format("%s/%s/%s", _baseApiUrl, policeForce.getId(), id)), Neighbourhood.class);
     }
 
     public List<Crime> streetCrimeByLocation(final String latitude, final String longitude) {
-        return getMany(URI.create(String.format("%s/crimes-street/all-crime?lat=%s&lng=%s", API_BASE, latitude, longitude)), Crime.class);
+        return getMany(URI.create(String.format("%s/crimes-street/all-crime?lat=%s&lng=%s", _baseApiUrl, latitude, longitude)), Crime.class);
     }
 
     public List<Crime> streetCrimeByPoliceForce(final @NotNull PoliceForce policeForce) {
@@ -109,7 +116,7 @@ public class UkPoliceApi {
             .minusMonths(1)
             .format(DateTimeFormatter.ofPattern("yyyy-MM"));
 
-        final URI uri = URI.create(String.format("%s/crimes-no-location?category=all-crime&force=%s&date=%s", API_BASE, policeForce.getId(), lastMonth));
+        final URI uri = URI.create(String.format("%s/crimes-no-location?category=all-crime&force=%s&date=%s", _baseApiUrl, policeForce.getId(), lastMonth));
         return getMany(uri, Crime.class);
     }
 
