@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <openjfx.version>21.0.8</openjfx.version>
+        <openjfx.version>26-ea+7</openjfx.version>
 
         <slf4j.version>2.0.17</slf4j.version>
         <logback.version>1.5.13</logback.version>
