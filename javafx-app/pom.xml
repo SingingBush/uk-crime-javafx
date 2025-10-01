@@ -84,7 +84,7 @@
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>position</artifactId>
-            <version>4.0.18</version>
+            <version>4.0.23</version>
         </dependency>
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
