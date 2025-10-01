@@ -89,7 +89,7 @@
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>storage</artifactId>
-            <version>4.0.18</version>
+            <version>4.0.23</version>
         </dependency>
         <dependency>
             <groupId>com.gluonhq</groupId>
