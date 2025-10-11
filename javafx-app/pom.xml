@@ -15,6 +15,10 @@
     <description>Use JavaFX with JDK 11 and create modular package</description>
     <inceptionYear>2019</inceptionYear>
 
+    <properties>
+        <gluon.version>4.0.23</gluon.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.singingbush</groupId>
@@ -79,18 +83,19 @@
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>lifecycle</artifactId>
-            <version>4.0.18</version>
+            <version>${gluon.version}</version>
         </dependency>
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>position</artifactId>
-            <version>4.0.18</version>
+            <version>${gluon.version}</version>
         </dependency>
         <dependency>
             <groupId>com.gluonhq.attach</groupId>
             <artifactId>storage</artifactId>
-            <version>4.0.18</version>
+            <version>${gluon.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.gluonhq</groupId>
             <artifactId>maps</artifactId>
