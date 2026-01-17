@@ -4,4 +4,6 @@ updates:
   directory: "/"
   schedule:
     interval: monthly
+  ignore:
+    - dependency-name: "org.openjfx:javafx-*"
   open-pull-requests-limit: 5

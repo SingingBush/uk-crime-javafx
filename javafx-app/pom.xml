@@ -16,7 +16,7 @@
     <inceptionYear>2019</inceptionYear>
 
     <properties>
-        <gluon.version>4.0.23</gluon.version>
+        <gluon.version>4.0.24</gluon.version>
     </properties>
 
     <dependencies>
