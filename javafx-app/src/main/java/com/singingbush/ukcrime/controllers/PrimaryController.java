@@ -87,7 +87,7 @@ public class PrimaryController {
                         .stream()
                         .filter(Objects::nonNull)
                         .distinct()
-                        .collect(Collectors.toList());
+                        .toList();
                     _neighbourhoods.clear();
                     _neighbourhoods.addAll(neighbourhoods);
                     if (!_neighbourhoods.isEmpty()) {
@@ -98,7 +98,7 @@ public class PrimaryController {
                         .stream()
                         .filter(Objects::nonNull)
                         .distinct()
-                        .collect(Collectors.toList());
+                        .toList();
                     _seniorOfficers.clear();
                     _seniorOfficers.addAll(officers);
 

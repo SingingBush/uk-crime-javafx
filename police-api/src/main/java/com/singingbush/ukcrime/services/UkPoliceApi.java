@@ -1,17 +1,17 @@
 package com.singingbush.ukcrime.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.type.CollectionType;
 import com.singingbush.ukcrime.model.Crime;
 import com.singingbush.ukcrime.model.Neighbourhood;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.singingbush.ukcrime.model.PoliceForce;
 import com.singingbush.ukcrime.model.SeniorOfficer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.type.CollectionType;
 
 import java.io.IOException;
 import java.net.URI;
@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -152,7 +153,7 @@ public class UkPoliceApi {
         return null;
     }
 
-    private <T> @Nullable List<T> getMany(final URI uri, final Class<T> type) {
+    private <T> @NotNull List<T> getMany(final URI uri, final Class<T> type) {
         final HttpRequest request = get(uri);
 
         try {
@@ -182,7 +183,7 @@ public class UkPoliceApi {
 //                log.info("Response body: " + response.body());
 //            });
 
-        return null;
+        return Collections.emptyList();
     }
 
     private <T> CompletableFuture<List<T>> getManyAsync(final URI uri, final Class<T> type) {
@@ -200,7 +201,7 @@ public class UkPoliceApi {
             .thenApply(body -> {
                 try {
                     return _mapper.readValue(body, listType);
-                } catch (final JsonProcessingException e) {
+                } catch (final JacksonException e) {
                     log.error("", e);
                     throw new CompletionException(e);
                 }
