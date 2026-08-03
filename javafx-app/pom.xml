@@ -16,7 +16,7 @@
     <inceptionYear>2019</inceptionYear>
 
     <properties>
-        <gluon.version>4.0.24</gluon.version>
+        <gluon.version>4.0.25</gluon.version>
     </properties>
 
     <dependencies>
@@ -128,6 +128,9 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>ukcrime/com.singingbush.ukcrime.AppMain</mainClass>
+                    <options>
+                        <option>--enable-native-access=javafx.graphics</option>
+                    </options>
                 </configuration>
             </plugin>
 <!--            <plugin>-->
